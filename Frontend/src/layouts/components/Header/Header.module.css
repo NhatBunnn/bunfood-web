@@ -1,0 +1,38 @@
+.header {
+  z-index: 1030;
+}
+
+.logoCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom right, #0d6efd, #6610f2);
+}
+
+.logoText {
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+}
+
+.searchInput {
+  padding-left: 2rem !important;
+  width: 250px;
+}
+
+.cartBadge {
+  font-size: 0.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

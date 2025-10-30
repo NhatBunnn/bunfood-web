@@ -1,0 +1,15 @@
+@media (min-width: 480px) {
+  /* css cho mobile */
+}
+
+@media (min-width: 768px) {
+  /* css cho tablet */
+}
+
+@media (min-width: 992px) {
+  /* css cho desktop nhỏ */
+}
+
+@media (min-width: 1200px) {
+  /* css cho desktop lớn */
+}

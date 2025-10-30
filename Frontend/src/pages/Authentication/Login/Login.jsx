@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
 import classNames from "classnames/bind";
+import useLogin from "./useLogin";
+import { Button } from "@components/index";
 
 const c = classNames.bind(styles);
 
 const Login = () => {
+  const { handleLogin, loading } = useLogin();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmit = (e) => {
+    console.log("abc");
+    e.preventDefault();
+    handleLogin(email, password);
+  };
+
   return (
     <div className={c("loginContainer")}>
-      <header className={c("header")}>
-        {/* Thay bằng component Header của bạn nếu muốn */}
-        <h2 className="text-center">Header</h2>
-      </header>
-
       <div
         className="container d-flex justify-content-center align-items-center"
         style={{ minHeight: "calc(100vh - 80px)" }}
@@ -26,7 +33,7 @@ const Login = () => {
             <p className="text-muted">Login to continue your food journey</p>
           </div>
 
-          <form className="d-flex flex-column gap-3">
+          <form className="d-flex flex-column gap-3" onSubmit={onSubmit}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 Email
@@ -36,6 +43,8 @@ const Login = () => {
                 className="form-control"
                 id="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -56,12 +65,11 @@ const Login = () => {
                 className="form-control"
                 id="password"
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-
-            <button type="submit" className="btn btn-primary w-100 btn-lg">
-              Login
-            </button>
+            <Button type="submit" isLoading={loading} label="login" />
           </form>
 
           <div className="mt-4 text-center">

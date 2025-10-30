@@ -1,10 +1,85 @@
 .button {
-  background-color: fff;
-  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  
+  transition: all 0.25s ease;
+  border: none;
+  outline: none;
+  user-select: none;
 }
 
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 🔥 Default: Gradient nóng đỏ → cam */
+.default {
+  color: #fff;
+  background: linear-gradient(135deg, #ff512f, #f09819);
+  border-radius: var(--radius-round, 12px);
+  box-shadow: 0 4px 12px rgba(240, 100, 50, 0.4);
+}
+
+.default:hover {
+  background: linear-gradient(135deg, #ff7043, #ffa726);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(240, 100, 50, 0.5);
+}
+
+.default:active {
+  transform: scale(0.97);
+}
+
+/* 🍽 Menu style */
+.menu {
+  background: #fff;
+  border: 1.5px solid #f5c6a5;
+  color: #d84315;
+  border-radius: var(--radius-small, 8px);
+}
+
+.menu:hover {
+  background: #fff6f2;
+  border-color: #ffa270;
+}
+
+/* 🔥 Outline: viền gradient đỏ-cam */
+.outline {
+  background: transparent;
+  border: 2px solid transparent;
+  border-image: linear-gradient(135deg, #ff512f, #f09819) 1;
+  color: #f4511e;
+  border-radius: var(--radius-small, 8px);
+  font-weight: 600;
+}
+
+.outline:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 81, 47, 0.1),
+    rgba(240, 152, 25, 0.1)
+  );
+  transform: translateY(-1px);
+}
+
+/* Loading state */
+.loading {
+  pointer-events: none;
+}
+
+.spinner {
+  font-size: 18px;
+  color: #fff;
+}
+
+/* Icon */
 .icon {
-  margin-right: 6px;
+  display: flex;
+  align-items: center;
 }

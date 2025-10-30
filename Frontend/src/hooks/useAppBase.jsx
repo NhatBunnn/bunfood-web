@@ -1,24 +1,30 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import useStatus from "./useStatus";
-import { useNotification } from "@context/NotificationProvider";
+import { useToast } from "@context/ui/ToastContext";
 
 function useAppBase() {
   const { t: te } = useTranslation("error");
   const { t: ts } = useTranslation("success");
-  const { setLoading, loading, setError, error, fieldErrors, setFieldErrors } =
-    useStatus();
-  const { showNotification } = useNotification();
+
+  const { addToast } = useToast();
+
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   return {
     te,
     ts,
-    setLoading,
-    loading,
-    setError,
+    success,
+    setSuccess,
     error,
+    setError,
     fieldErrors,
     setFieldErrors,
-    showNotification,
+    loading,
+    setLoading,
+    addToast,
   };
 }
 

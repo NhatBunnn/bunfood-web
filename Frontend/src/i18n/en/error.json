@@ -1,6 +1,13 @@
-
 {
   "AUTH_LOGIN_SUCCESS": "Login successful",
+  "AUTH_LOGIN_FAILED": "Login failed",
   "AUTH_REGISTER_SUCCESS": "Registration successful",
-  "AUTH_SEND_CODE_SUCCESS": "Verification code sent"
+  "AUTH_SEND_CODE_SUCCESS": "Verification code sent",
+  
+  "AUTH_EMAIL_REQUIRED": "Email is required",
+  "AUTH_PASSWORD_REQUIRED": "Password is required",
+  "AUTH_CONFIRM_PASSWORD_REQUIRED": "Confirm password is required",
+  "AUTH_PASSWORD_MISMATCH": "Passwords do not match",
+  "AUTH_FIRSTNAME_REQUIRED": "First name is required",
+  "AUTH_LASTNAME_REQUIRED": "Last name is required"
 }

@@ -1,0 +1,27 @@
+.bgGradient {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.cardContainer {
+  max-width: 420px;
+  border-radius: 12px;
+}
+
+.iconCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.iconMail {
+  font-size: 28px;
+}
+
+.codeInput {
+  letter-spacing: 8px;
+}
+
+.demoBox {
+  background-color: #f1f3f5;
+}

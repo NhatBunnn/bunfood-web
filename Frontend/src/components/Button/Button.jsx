@@ -12,6 +12,13 @@ const c = classNames.bind(styles);
 
 /**
  * @param {{
+ *  label?: string,
+ *  icon?: any,
+ *  type?: "button" | "submit" | "reset",
+ *  onClick?: Function,
+ *  isLoading?: boolean,
+ *  to?: string,
+ *  className?: string,
  *  variant?: ButtonVariant
  * }} props
  */
@@ -19,7 +26,7 @@ const c = classNames.bind(styles);
 function Button({
   label = "",
   icon,
-  type,
+  type = "button",
   onClick,
   isLoading = false,
   to = "",
@@ -28,50 +35,31 @@ function Button({
 }) {
   const navigate = useNavigate();
 
+  const handleClick = (e) => {
+    if (to) navigate(to);
+    else onClick?.(e);
+  };
+
   return (
-    <div
-      className={c(
-        "button",
-        "d-inline-flex",
-        "cursor-pointer",
-        "link-no-style",
-        "outline-primary",
-        className
-      )}
+    <button
+      className={c("button", variant, className, { loading: isLoading })}
       type={type}
-      onClick={(e) => {
-        if (to) {
-          navigate(to);
-        } else {
-          onClick?.(e);
-        }
-      }}
-      style={
-        variant === "default"
-          ? {
-              borderRadius: "var(--radius-round)",
-              boxShadow: "var(--box-shadow-primary)",
-            }
-          : {
-              borderRadius: "var(--radius-small)",
-              boxShadow: "none",
-              border: "none",
-              background: "var(--color-white)",
-            }
-      }
+      onClick={handleClick}
+      disabled={isLoading}
     >
-      {icon && (
+      {icon && !isLoading && (
         <div className={c("icon")}>
           <FontAwesomeIcon icon={icon} />
         </div>
       )}
       <div className={c("label")}>
-        {!isLoading && label}
-        {isLoading && (
-          <FontAwesomeIcon icon={faSpinner} className="ms-2 fa-spin" />
+        {isLoading ? (
+          <FontAwesomeIcon icon={faSpinner} spin className={c("spinner")} />
+        ) : (
+          label
         )}
       </div>
-    </div>
+    </button>
   );
 }
 

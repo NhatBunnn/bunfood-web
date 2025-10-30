@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Register.module.css";
 import classNames from "classnames/bind";
+import useRegister from "./useRegister";
+import { Button } from "@components/index";
 
 const c = classNames.bind(styles);
 
 const Register = () => {
+  const { handleRegister, loading } = useRegister();
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleRegister(firstName, lastName, email, password, confirmPassword);
+  };
+
   return (
     <div className={c("registerContainer")}>
-      <header className={c("header")}>
-        {/* Thay bằng component Header của bạn nếu muốn */}
-        <h2 className="text-center">Header</h2>
-      </header>
-
       <div
         className="container d-flex justify-content-center align-items-center"
         style={{ minHeight: "calc(100vh - 80px)" }}
@@ -28,17 +38,36 @@ const Register = () => {
             </p>
           </div>
 
-          <form className="d-flex flex-column gap-3">
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">
-                Username
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="username"
-                placeholder="Enter your username"
-              />
+          <form className="d-flex flex-column gap-3" onSubmit={onSubmit}>
+            {/* First name & last name cùng hàng */}
+            <div className="d-flex gap-3">
+              <div className="flex-fill">
+                <label htmlFor="firstName" className="form-label">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="firstName"
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+
+              <div className="flex-fill">
+                <label htmlFor="lastName" className="form-label">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastName"
+                  placeholder="Last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="mb-3">
@@ -50,6 +79,8 @@ const Register = () => {
                 className="form-control"
                 id="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -62,6 +93,8 @@ const Register = () => {
                 className="form-control"
                 id="password"
                 placeholder="Create a password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -74,12 +107,12 @@ const Register = () => {
                 className="form-control"
                 id="confirmPassword"
                 placeholder="Confirm your password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
 
-            <button type="submit" className="btn btn-primary w-100 btn-lg">
-              Register
-            </button>
+            <Button type="submit" isLoading={loading} label="register" />
           </form>
 
           <div className="mt-4 text-center">

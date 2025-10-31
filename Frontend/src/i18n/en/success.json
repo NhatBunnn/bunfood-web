@@ -2,7 +2,12 @@
   "AUTH_LOGIN_SUCCESS": "Login successful",
   "AUTH_REGISTER_SUCCESS": "Registration successful",
   "AUTH_SEND_CODE_SUCCESS": "Verification code sent",
+  "AUTH_SEND_CODE_FAILED": "Failed to send verification code",
+  "AUTH_CODE_EXPIRED": "Verification code expired",
+  "AUTH_WAIT_BEFORE_RESEND": "Please wait before requesting a new code",
   "AUTH_LOGOUT_SUCCESS": "Logout successful",
   "AUTH_UPDATE_SUCCESS": "Profile updated successfully",
+  "AUTH_EMAIL_VERIFIED_SUCCESS": "Email verified successfully",
   "AUTH_PASSWORD_RESET_SUCCESS": "Password reset successful"
+  
 }

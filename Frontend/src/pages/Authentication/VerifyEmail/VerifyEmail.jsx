@@ -1,8 +1,33 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./VerifyEmail.module.css";
+import useVerifyEmail from "./useVerifyEmail";
+import { useEffect, useState } from "react";
 
 const VerifyEmail = () => {
-  const email = "your@email.com"; // ví dụ email tĩnh
+  const { handleSubmitCode, handleSendCode, countDown, loading } =
+    useVerifyEmail();
+
+  const [code, setCode] = useState("");
+
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const email = params.get("email");
+
+  useEffect(() => {
+    if (email) {
+      handleSendCode(email);
+    }
+  }, [email]);
+
+  const onSubmit = () => {
+    handleSubmitCode(email, code);
+  };
+
+  const onResend = () => {
+    if (countDown === 0) {
+      handleSendCode(email);
+    }
+  };
 
   return (
     <div
@@ -31,16 +56,28 @@ const VerifyEmail = () => {
               type="text"
               placeholder="Enter 6-digit code"
               className={`form-control text-center fs-4 ${styles.codeInput}`}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
             />
           </div>
 
-          <button className="btn btn-primary w-100 py-2 fw-semibold mb-3">
-            Verify Email
+          <button
+            className="btn btn-primary w-100 py-2 fw-semibold mb-3"
+            onClick={onSubmit}
+            disabled={loading}
+          >
+            {loading ? "Verifying..." : "Verify Email"}
           </button>
 
           <div className="text-center">
-            <button className="btn btn-link text-decoration-none fw-semibold mb-3">
-              Resend verification code
+            <button
+              className="btn btn-link text-decoration-none fw-semibold mb-3"
+              onClick={onResend}
+              disabled={countDown > 0}
+            >
+              {countDown > 0
+                ? `Resend in ${countDown}s`
+                : "Resend verification code"}
             </button>
             <div>
               <Link

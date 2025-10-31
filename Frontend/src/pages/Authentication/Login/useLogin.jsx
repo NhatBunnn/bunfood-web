@@ -1,9 +1,11 @@
 import { API_URL } from "@config/apiConfig";
+import { useToken } from "@context/auth/TokenContext";
 import useAppBase from "@hooks/useAppBase";
 import { useNavigate } from "react-router-dom";
 
 function useLogin() {
   const { te, ts, loading, setLoading, addToast } = useAppBase();
+  const { setToken } = useToken();
 
   const navigate = useNavigate();
 
@@ -27,12 +29,14 @@ function useLogin() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       const result = await response.json();
 
       if (response.ok) {
         addToast(ts("AUTH_LOGIN_SUCCESS"), "success");
+        setToken(result.data.accessToken);
         navigate(`/`);
       } else {
         addToast(te(result?.errorCode) || "Login failed", "error");

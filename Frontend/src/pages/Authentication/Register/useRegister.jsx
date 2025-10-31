@@ -1,8 +1,11 @@
 import { API_URL } from "@config/apiConfig";
 import useAppBase from "@hooks/useAppBase";
+import { useNavigate } from "react-router-dom";
 
 function useRegister() {
   const { te, ts, loading, setLoading, addToast } = useAppBase();
+
+  const navigate = useNavigate();
 
   const handleRegister = async (
     firstName,
@@ -60,6 +63,7 @@ function useRegister() {
 
       if (response.ok) {
         addToast(ts("AUTH_REGISTER_SUCCESS"), "success");
+        navigate(`/verify-email?email=${encodeURIComponent(email)}`);
       } else {
         addToast(te(result?.errorCode) || "Registration failed", "error");
       }

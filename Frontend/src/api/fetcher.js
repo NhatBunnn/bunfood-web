@@ -1,4 +1,3 @@
-import { API_URL } from "@config/apiConfig";
 import axiosClient from "./axiosClient";
 import { useToken } from "@context/auth/TokenContext";
 
@@ -8,6 +7,7 @@ export const useFetcher = () => {
   const fetcher = async ({ url, method = "get", params, data, signal }) => {
     try {
       const token = await getToken();
+
       const response = await axiosClient({
         url,
         method,

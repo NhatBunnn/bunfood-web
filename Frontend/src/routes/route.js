@@ -1,6 +1,8 @@
 import { Homepage, Login, NotFound, Register, VerifyEmail } from "@pages/index";
 import DefaultLayout from "../layouts/DefaultLayout/DefaultLayout";
 import Forbidden from "@pages/FallBack/Forbidden/Forbidden";
+import AdminHome from "@pages/AdminDashboard/AdminHome/AdminHome";
+import AdminLayout from "@layouts/AdminLayout/AdminLayout";
 
 const publicRoutes = [
   // Homepage
@@ -13,7 +15,16 @@ const publicRoutes = [
 
   // FallBack
   { path: "/*", Page: NotFound },
-  { path: "/403*", Page: Forbidden },
+  { path: "/403", Page: Forbidden },
 ];
 
-export { publicRoutes };
+const adminRoutes = [
+  {
+    path: "/admin",
+    Page: AdminHome,
+    Layout: AdminLayout,
+    roles: ["ADMIN"],
+  },
+];
+
+export { publicRoutes, adminRoutes };

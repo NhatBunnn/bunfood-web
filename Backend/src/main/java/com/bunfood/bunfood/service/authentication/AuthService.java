@@ -20,6 +20,7 @@ import com.bunfood.bunfood.entity.RefreshToken;
 import com.bunfood.bunfood.entity.User;
 import com.bunfood.bunfood.exception.ApiException;
 import com.bunfood.bunfood.mapper.UserMapper;
+import com.bunfood.bunfood.security.CustomUserDetails;
 import com.bunfood.bunfood.security.JwtTokenProvider;
 import com.bunfood.bunfood.security.JwtUtil;
 import com.bunfood.bunfood.service.refreshToken.IRefreshTokenService;
@@ -82,34 +83,33 @@ public class AuthService implements IAuthService {
     @Override
     public AuthResDTO Login(UserReqDTO user) throws Exception {
         try {
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                    user.getEmail(), user.getPassword());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getEmail(),
+                    user.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject()
-                    .authenticate(usernamePasswordAuthenticationToken);
+                    .authenticate(authToken);
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            User currentUser = userDetails.getUser();
+
+            String accessToken = jwtTokenProvider.generateAccessToken(currentUser);
+            String refreshToken = jwtTokenProvider.generateRefreshToken(currentUser);
+
+            ResponseCookie responseCookie = ResponseCookie
+                    .from("refresh_token", refreshToken)
+                    .httpOnly(true)
+                    .secure(true)
+                    .path("/")
+                    .maxAge(jwtUtil.getRefreshTokenExpiration())
+                    .sameSite("None")
+                    .build();
+
+            return userMapper.convertToAuthResponseDTO(currentUser, accessToken, refreshToken, responseCookie);
 
         } catch (Exception e) {
             throw new ApiException(ErrorCode.AUTH_INVALID);
         }
-
-        User currentUser = this.userService.findByEmail(user.getEmail());
-
-        String accessToken = this.jwtTokenProvider.generateAccessToken(currentUser);
-        String refreshToken = this.jwtTokenProvider.generateRefreshToken(currentUser);
-
-        ResponseCookie responseCookie = ResponseCookie
-                .from("refresh_token", refreshToken)
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .maxAge(jwtUtil.getRefreshTokenExpiration())
-                .sameSite("None")
-                .build();
-
-        AuthResDTO authDTO = new AuthResDTO();
-        authDTO = userMapper.convertToAuthResponseDTO(currentUser, accessToken, refreshToken, responseCookie);
-
-        return authDTO;
     }
 
     @Override

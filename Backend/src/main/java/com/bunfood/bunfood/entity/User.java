@@ -99,9 +99,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RefreshToken> refreshToken;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private VerifyCode verifyCode;
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch =
+    // FetchType.LAZY)
+    // @JsonIgnore
+    // private VerifyCode verifyCode;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

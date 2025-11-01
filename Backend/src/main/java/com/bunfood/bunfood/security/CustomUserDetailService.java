@@ -1,8 +1,5 @@
 package com.bunfood.bunfood.security;
 
-import java.util.ArrayList;
-
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +26,7 @@ public class CustomUserDetailService implements UserDetailsService {
         if (user.isEmailVerified() == false)
             throw new ApiException(ErrorCode.USER_NOT_VERIFIED);
 
-        return new User(user.getEmail(), user.getPassword(), new ArrayList());
+        return new CustomUserDetails(user);
     }
 
 }

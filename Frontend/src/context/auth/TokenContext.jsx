@@ -7,6 +7,8 @@ import {
   useState,
 } from "react";
 import { API_URL } from "@config/apiConfig";
+import Loading from "@components/Loading/Loading";
+import { decodeJWT } from "@service/jwtService";
 
 const TokenContext = createContext(null);
 
@@ -45,8 +47,9 @@ function TokenProvider({ children }) {
       });
       if (response.ok) {
         const data = await response.json();
-        const newToken = data.accessToken;
+        const newToken = data.data.accessToken;
         tokenRef.current = newToken;
+
         return newToken;
       } else {
         console.log("Không lấy được Token");
@@ -77,10 +80,26 @@ function TokenProvider({ children }) {
     init();
   }, []);
 
-  const value = useMemo(() => ({ getToken, setToken }), []);
+  async function getRoles() {
+    const token = await getToken();
+    if (!token) return [];
+
+    const decoded = decodeJWT(token);
+    return decoded?.roles || [];
+  }
+
+  async function getScope() {
+    const token = await getToken();
+    if (!token) return "";
+
+    const decoded = decodeJWT(token);
+    return decoded?.scope || "";
+  }
+
+  const value = useMemo(() => ({ getToken, setToken, getRoles }), []);
 
   if (loading) {
-    return <>Loading...</>;
+    return <Loading />;
   }
 
   return (

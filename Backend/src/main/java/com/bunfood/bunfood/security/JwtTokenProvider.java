@@ -23,76 +23,76 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class JwtTokenProvider {
-    private JwtEncoder jwtEncoder;
-    private JwtUtil jwtUtil;
-    private IRefreshTokenService refreshTokenService;
+        private JwtEncoder jwtEncoder;
+        private JwtUtil jwtUtil;
+        private IRefreshTokenService refreshTokenService;
 
-    public String generateAccessToken(User user) {
-        Instant now = Instant.now();
-        Instant expiry = now.plus(this.jwtUtil.getAccessTokenExpiration(), ChronoUnit.SECONDS);
+        public String generateAccessToken(User user) {
+                Instant now = Instant.now();
+                Instant expiry = now.plus(this.jwtUtil.getAccessTokenExpiration(), ChronoUnit.SECONDS);
 
-        Set<String> roles = new HashSet<>();
-        Set<String> permissions = new HashSet<>();
+                Set<String> roles = new HashSet<>();
+                Set<String> permissions = new HashSet<>();
 
-        // user.getRoles().forEach(role -> {
-        // roles.add(role.getName());
-        // role.getPermissions().forEach(p -> {
-        // permissions.add(p.getName());
-        // });
-        // });
+                user.getRoles().forEach(role -> {
+                        roles.add(role.getName());
+                        role.getPermissions().forEach(p -> {
+                                permissions.add(p.getName());
+                        });
+                });
 
-        JwsHeader header = JwsHeader.with(this.jwtUtil.getMacAlgorithm()).build();
+                JwsHeader header = JwsHeader.with(this.jwtUtil.getMacAlgorithm()).build();
 
-        JwtClaimsSet payload = JwtClaimsSet.builder()
-                .issuedAt(now)
-                .expiresAt(expiry)
-                .subject(user.getId() + "")
-                .claim("user", Map.of(
-                        "email", user.getEmail(),
-                        "firstName", user.getFirstName(),
-                        "lastName", user.getLastName()))
-                .claim("roles", roles)
-                .claim("scope", String.join(" ", permissions))
-                .build();
+                JwtClaimsSet payload = JwtClaimsSet.builder()
+                                .issuedAt(now)
+                                .expiresAt(expiry)
+                                .subject(user.getId() + "")
+                                .claim("user", Map.of(
+                                                "email", user.getEmail(),
+                                                "firstName", user.getFirstName(),
+                                                "lastName", user.getLastName()))
+                                .claim("roles", roles)
+                                .claim("scope", String.join(" ", permissions))
+                                .build();
 
-        String token = this.jwtEncoder.encode(JwtEncoderParameters.from(header, payload)).getTokenValue();
+                String token = this.jwtEncoder.encode(JwtEncoderParameters.from(header, payload)).getTokenValue();
 
-        return token;
-    }
+                return token;
+        }
 
-    public String generateRefreshToken(User user) {
-        Instant now = Instant.now();
-        Instant expiry = now.plus(jwtUtil.getRefreshTokenExpiration(), ChronoUnit.SECONDS);
+        public String generateRefreshToken(User user) {
+                Instant now = Instant.now();
+                Instant expiry = now.plus(jwtUtil.getRefreshTokenExpiration(), ChronoUnit.SECONDS);
 
-        // Temp
-        List<String> listAuthority = new ArrayList<>();
-        listAuthority.add("ROLE_USER_CREATE");
-        listAuthority.add("ROLE_USER_UPDATE");
+                // Temp
+                List<String> listAuthority = new ArrayList<>();
+                listAuthority.add("ROLE_USER_CREATE");
+                listAuthority.add("ROLE_USER_UPDATE");
 
-        JwsHeader header = JwsHeader.with(this.jwtUtil.getMacAlgorithm()).build();
+                JwsHeader header = JwsHeader.with(this.jwtUtil.getMacAlgorithm()).build();
 
-        JwtClaimsSet payload = JwtClaimsSet.builder()
-                .issuedAt(now)
-                .expiresAt(expiry)
-                .subject(user.getId() + "")
-                .claim("user", Map.of(
-                        "email", user.getEmail(),
-                        "firstName", user.getFirstName(),
-                        "lastName", user.getLastName()))
-                .claim("permission", listAuthority)
-                .build();
+                JwtClaimsSet payload = JwtClaimsSet.builder()
+                                .issuedAt(now)
+                                .expiresAt(expiry)
+                                .subject(user.getId() + "")
+                                .claim("user", Map.of(
+                                                "email", user.getEmail(),
+                                                "firstName", user.getFirstName(),
+                                                "lastName", user.getLastName()))
+                                .claim("permission", listAuthority)
+                                .build();
 
-        String token = this.jwtEncoder.encode(JwtEncoderParameters.from(header, payload)).getTokenValue();
+                String token = this.jwtEncoder.encode(JwtEncoderParameters.from(header, payload)).getTokenValue();
 
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUser(user);
-        refreshToken.setRefreshToken(token);
-        refreshToken.setCreatedAt(now);
-        refreshToken.setExpiryDate(expiry);
+                RefreshToken refreshToken = new RefreshToken();
+                refreshToken.setUser(user);
+                refreshToken.setRefreshToken(token);
+                refreshToken.setCreatedAt(now);
+                refreshToken.setExpiryDate(expiry);
 
-        this.refreshTokenService.save(refreshToken);
+                this.refreshTokenService.save(refreshToken);
 
-        return token;
-    }
+                return token;
+        }
 
 }

@@ -2,6 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
 import classNames from "classnames/bind";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+  faShoppingCart,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 const c = classNames.bind(styles);
 
@@ -53,7 +59,9 @@ const Header = ({ cartItemCount = 0 }) => {
         <div className="d-flex align-items-center gap-3">
           {/* Search */}
           <div className="d-none d-lg-flex position-relative">
-            <span className={c("searchIcon")}>🔍</span>
+            <span className={c("searchIcon")}>
+              <FontAwesomeIcon icon={faSearch} />
+            </span>
             <input
               type="search"
               placeholder="Search dishes..."
@@ -64,7 +72,7 @@ const Header = ({ cartItemCount = 0 }) => {
           {/* Cart */}
           <Link to="/cart" className="position-relative">
             <button className="btn btn-outline-secondary position-relative">
-              🛒
+              <FontAwesomeIcon icon={faShoppingCart} />
               {cartItemCount > 0 && (
                 <span
                   className={
@@ -79,7 +87,9 @@ const Header = ({ cartItemCount = 0 }) => {
           </Link>
 
           {/* User */}
-          <button className="btn btn-outline-secondary">👤</button>
+          <button className="btn btn-outline-secondary">
+            <FontAwesomeIcon icon={faUser} />
+          </button>
         </div>
       </div>
     </header>
